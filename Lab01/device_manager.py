@@ -1,9 +1,10 @@
 import json
+import device as device
 
 class DeviceManager:
 
     def __init__(self):
-        self.catalog = json.load(open("all.json"))
+        self.catalog = json.load(open("Lab01/all.json"))
 
     def searchByName(self):
         user_input = input("Enter the device name to search: ")
@@ -12,13 +13,14 @@ class DeviceManager:
         found = False
 
         for device in devices_list:
-            if device["name"] == user_input:
-                print(f"Device found: Name: {device['name']}, ID: {device['ID']}, Year: {device['year']}")
+            if device["deviceName"] == user_input:
+                print(f"Device found: Name: {device['deviceName']}, ID: {device['deviceID']}")
                 devices_found.append(device)
                 found = True
         
         if found:
-            print(devices_found)
+            # print(devices_found)
+            return found
         else:
             print("No device found with that name.")
 
@@ -35,12 +37,13 @@ class DeviceManager:
 
         for device in devices_list:
             if device["serviceType"] == user_input:
-                print(f"Device found: Name: {device['name']}, ID: {device['ID']}, Year: {device['year']}")
+                print(f"Device found: Name: {device['deviceName']}, ID: {device['deviceID']}")
                 devices_found.append(device)
                 found = True
         
         if found:
-            print(devices_found)
+            # print(devices_found)
+            return found
         else:
             print("No device found with that name.")
 
@@ -66,20 +69,3 @@ class DeviceManager:
         device_dict = {"deviceName":user_input_name,"deviceID":user_input_id,"availableServices":available_services}
         self.catalog["devicesList"].append(device_dict)
         json.dupm(self.catalog,open("all.json","w"))
-
-
-class device:
-    def __init__(self,name,ID,year):
-        self.name = name
-        self.ID = ID
-        self.year = year
-
-
-if __name__ == "__main__":
-    welcome_message = "Hello,welcome to the Device Manager"
-    list = DeviceManager()
-    print(welcome_message)
-    list.searchByName()
-
-
-
