@@ -129,12 +129,14 @@ class DeviceManager:
                 service_details.append(single_service_details_to_enter)
                 available_services.append(service_to_enter)
                 
+            # update lastUpdate field of the newly added device to current date and time
+            last_update = datetime.now().strftime("%Y-%m-%d %H:%M")
 
 
-        device_dict = {"deviceID":user_input_id,"deviceName":user_input_name,"measureType":measure_types,"availableServices":available_services}
+        device_dict = {"deviceID":user_input_id,"deviceName":user_input_name,"measureType":measure_types,"availableServices":available_services,"lastUpdate":last_update}
         self.catalog["devicesList"].append(device_dict)
 
-        # update lastUpdate field to current date and time
+        # update lastUpdate field of the whole documentto current date and time
         self.catalog["lastUpdate"] = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     def printAll(self):
