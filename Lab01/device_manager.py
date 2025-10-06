@@ -128,9 +128,9 @@ class DeviceManager:
                     if detail_to_enter == "ok":
                         break
                     single_detail_to_enter.append(detail_to_enter)
-                if service_to_enter == "MQTT":
+                if service_to_enter == "MQTT": # MQTT requires a topic
                     single_service_details_to_enter = {"serviceType":service_to_enter,"topic":single_detail_to_enter}
-                elif service_to_enter == "REST":
+                elif service_to_enter == "REST": # REST requires a serviceIP
                     single_service_details_to_enter = {"serviceType":service_to_enter,"serviceIP":single_detail_to_enter}  
 
                 # update serviceDetails list
@@ -141,6 +141,7 @@ class DeviceManager:
             # update lastUpdate field of the newly added device to current date and time
             last_update = datetime.now().strftime("%Y-%m-%d")
 
+        # create the new device (as a dictionary) and append it to the devicesList
         device_dict = {"deviceID":user_input_id,"deviceName":user_input_name,"measureType":measure_types,"availableServices":available_services,"lastUpdate":last_update}
         self.catalog["devicesList"].append(device_dict)
 
@@ -149,6 +150,34 @@ class DeviceManager:
 
     def updateDevice(self, devID):
 
+        for device in self.catalog["devicesList"]:
+            if str(device["deviceID"]) == str(devID):
+                print(f"Current device data: {device}")
+
+                # update deviceName
+                new_name = input("Enter new device name (leave blank to keep current): ")
+                if new_name:
+                    device["deviceName"] = new_name
+                
+                # update measureTypes
+                new_measure = input("Enter new measureType (leave blank to keep current): ")
+                if new_measure:
+                    device["measureType"] = [new_measure]
+                
+                # update availableServices
+                new_available_services = input("Enter new availableServices (comma-separated, leave blank to keep current): ")
+                if new_available_services:
+                    device["availableServices"] = new_available_services.split(',')
+
+                # TODO: add functionality to update serviceDetails
+
+                # update lastUpdate field of the updated device to current date
+                device["lastUpdate"] = datetime.now().strftime("%Y-%m-%d")
+                print("Device updated.")
+                return
+        
+        # since we return inside the for loop, inside the if that selects the deviceID, if we reach here, the device was not found
+        print("Device not found.")
         return
 
     def printAll(self):
