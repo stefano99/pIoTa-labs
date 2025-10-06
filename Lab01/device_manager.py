@@ -175,6 +175,7 @@ class DeviceManager:
                 device["lastUpdate"] = datetime.now().strftime("%Y-%m-%d")
                 print("Device updated.")
                 return
+            
         
         # since we return inside the for loop, inside the if that selects the deviceID, if we reach here, the device was not found
         print("Device not found.")
