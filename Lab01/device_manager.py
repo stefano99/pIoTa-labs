@@ -124,6 +124,7 @@ class DeviceManager:
                 single_detail_to_enter = []
                 # for each service, ask user for serviceDetails until they type 'ok'
                 while True:
+                    detail_to_enter = []
                     detail_to_enter = input("Please add the serviceDetails available for the Service you just added. When finish type ok: ")
                     if detail_to_enter == "ok":
                         break
@@ -166,17 +167,27 @@ class DeviceManager:
                 
                 # update availableServices
                 new_available_services = input("Enter new availableServices (comma-separated, leave blank to keep current): ")
-                if new_available_services:
-                    device["availableServices"] = new_available_services.split(',')
+                for single_service in new_available_services:
+                    new_service_details = input('Enter new serviceDetails for service {} (comma-separated): '.format(single_service))
+                    if new_service_details: # check if user entered something 
+                        for service_detail in new_service_details:
+                            single_service_details_to_enter = []
+                            if single_service == "MQTT": # MQTT requires a topic
+                                single_service_details_to_enter = {"serviceType":single_service,"topic":new_service_details.split(',')}
+                            elif single_service == "REST": # REST requires a serviceIP
+                                single_service_details_to_enter = {"serviceType":single_service,"serviceIP":new_service_details.split(',')}
+                    else: # if user did not enter anything, error and cancel update of serviceDetails/availableServices
+                        print("No serviceDetails entered, but needed by the serviceType. serviceDetails update cancelled.")
+                        return
 
-                # TODO: add functionality to update serviceDetails
+                    # update availableServices list    
+                    device["availableServices"] = new_available_services.split(',')
 
                 # update lastUpdate field of the updated device to current date
                 device["lastUpdate"] = datetime.now().strftime("%Y-%m-%d")
                 print("Device updated.")
                 return
             
-        
         # since we return inside the for loop, inside the if that selects the deviceID, if we reach here, the device was not found
         print("Device not found.")
         return
