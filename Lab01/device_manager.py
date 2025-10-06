@@ -126,7 +126,10 @@ class DeviceManager:
                     single_service_details_to_enter = {"serviceType":service_to_enter,"topic":single_detail_to_enter}
                 elif service_to_enter == "REST":
                     single_service_details_to_enter = {"serviceType":service_to_enter,"serviceIP":single_detail_to_enter}  
+
+                # update serviceDetails list
                 service_details.append(single_service_details_to_enter)
+                # update availableServices list
                 available_services.append(service_to_enter)
                 
             # update lastUpdate field of the newly added device to current date and time
