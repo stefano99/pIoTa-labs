@@ -79,7 +79,6 @@ class DeviceManager:
             print("No device found with that measure type.")
         return found
 
-# INCOMPLETE
     def insertDevice(self):
         user_input_id = input("Enter the new Device ID: ")
         devices_list = self.catalog["devicesList"]
@@ -93,7 +92,14 @@ class DeviceManager:
         # if the device ID already exists, ask user for update
         if found:
             print("Device with this ID already exists.")
-
+            user_input_update = input("Do you want to update the existing device? (yes/no): ")
+            if user_input_update.lower() == "yes":
+                self.updateDevice(user_input_id)
+                return
+            else:
+                print("Insertion cancelled.")
+                return
+            
         # if the device ID does not exist, ask user for device details
         else:
             user_input_name = input("Enter the new Device Name: ")
@@ -133,14 +139,17 @@ class DeviceManager:
                 available_services.append(service_to_enter)
                 
             # update lastUpdate field of the newly added device to current date and time
-            last_update = datetime.now().strftime("%Y-%m-%d %H:%M")
-
+            last_update = datetime.now().strftime("%Y-%m-%d")
 
         device_dict = {"deviceID":user_input_id,"deviceName":user_input_name,"measureType":measure_types,"availableServices":available_services,"lastUpdate":last_update}
         self.catalog["devicesList"].append(device_dict)
 
         # update lastUpdate field of the whole documentto current date and time
         self.catalog["lastUpdate"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    def updateDevice(self, devID):
+
+        return
 
     def printAll(self):
         print(self.catalog)
